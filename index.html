@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Random Team Generator</title>
+</head>
+<body>
+    <h1 class="main">Random  Team Generator</h1>
+    <form action="">
+        <input type="text" id="names" placeholder="enter each name after a coma">
+        <input type="number" id="teamChoice" placeholder="enter the number of teams"/>
+        <input type="submit" value="Start" id="submit"/>
+    </form>
+    
+    <div class="teams">
+        <h1>Teams:</h1>
+        <div class="randomized">
+        </div>
+    </div>
+    <script>
+        document.querySelector('#submit').addEventListener("click", (e)=>{
+        e.preventDefault();
+        const randomSort=[];
+        const namesInput = document.querySelector("#names");
+        const names = namesInput.value.split(",").map(name => name.trim())
+        const teamChoice = parseInt(document.querySelector("#teamChoice").value);
+        const sorted = [...names];
+
+            for (let i=0; i<names.length; i++) {
+                randomSort.push(sorted[Math.floor(Math.random()*(sorted.length))])
+                sorted.splice(sorted.indexOf(randomSort[i]),1);
+            }
+
+            divideArray(randomSort, teamChoice);
+
+// console.log(randomSort)
+// console.log(divideArray(randomSort, teamChoice))
+        
+
+        })
+
+function divideArray(arr, numSubarrays) {
+    const n = arr.length;
+    const size = Math.floor(n / numSubarrays);
+    let remainder = n % numSubarrays;
+    const subarrays = [];
+    let idx = 0;
+    document.querySelector('.randomized').innerHTML="";
+    for (let i = 0; i < numSubarrays; i++) {
+        let subarraySize = size + (remainder > 0 ? 1 : 0);
+        remainder--;
+        subarrays.push(arr.slice(idx, idx + subarraySize));
+        idx += subarraySize;
+        
+        const cont = document.createElement('h2');
+        cont.classList.add("teamHead");
+        const team = document.createElement('h3');
+        team.textContent = subarrays[i].join(', ');
+        team.classList.add("teamMember");
+        cont.textContent=`Team ${i + 1}: `;
+        document.querySelector('.randomized').appendChild(cont);
+        document.querySelector('.randomized').appendChild(team);
+
+    }
+    return subarrays;
+}
+
+
+    </script>
+</body>
+</html>
+
